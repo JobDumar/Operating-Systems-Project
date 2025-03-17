@@ -1,0 +1,61 @@
+body {
+    background-color: black;
+    font-family: system-ui;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+}   
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: 20px;
+}
+.header {
+    background-color: #5E2129;
+    height: 80px;
+    width: 100%;
+}
+.principal-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 5fr 3fr;
+    gap: 25px;
+    background-color: transparent;
+    height: 100%;
+    padding: 15px;
+}
+
+/* Contenedores con bordes */
+.info-aircraft-arriving,
+.info-aircraft-leaving,
+.table-aircraft-arriving,
+.table-aircraft-leaving,
+.table-randoms-aircraft {
+    border: 1px solid #cccccc;
+    background-color: transparent;
+}
+
+/* Info */
+.info-aircraft-arriving {
+    grid-area: 1 / 1 / 2 / 2;
+}
+.info-aircraft-leaving {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+/* Tablas */
+.table-aircraft-arriving {
+    grid-area: 2 / 1 / 3 / 2;
+}
+.table-aircraft-leaving {
+    grid-area: 2 / 2 / 3 / 3;
+    color: #cccccc;
+}
+.table-randoms-aircraft {
+    grid-area: 3 / 1 / 4 / 3;
+}
