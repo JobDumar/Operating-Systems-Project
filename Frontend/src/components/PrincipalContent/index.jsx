@@ -1,7 +1,7 @@
 import React from 'react';
 import { InfoSection } from '../InfoSection';
 import { DataTable } from '../DataTable';
-import "./PrincipalContent.css"
+import "./principalContent.css"
 
 export function PrincipalContent() {
     return (

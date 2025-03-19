@@ -1,0 +1,14 @@
+README.md
+Operating-Systems-Project/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.env
+.DS_Store
+node_modules
+dist
+.git
+.DS_Store
+.env
