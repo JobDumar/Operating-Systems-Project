@@ -82,7 +82,7 @@ def update_planes():
             
             if plane["distance"] <= 0:
                 plane["status"] = "Aterrizó"
-                continue  a
+                continue
 
             planes_to_reorder.append(plane_id)
 
