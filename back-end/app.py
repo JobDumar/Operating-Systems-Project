@@ -71,10 +71,10 @@ def update_planes():
 
         planes_to_reorder = []
         
-        for _, plane_id in landing_queue[:]:  # Extraer el plane_id correctamente
+        for _, plane_id in landing_queue[:]:
             if plane_id not in planes:
                 continue
-            plane = planes[plane_id]  # Acceder correctamente desde el diccionario planes
+            plane = planes[plane_id] 
             plane["distance"] -= plane["speed"] * 10
 
             if plane["fuel"] > 0:
@@ -82,7 +82,7 @@ def update_planes():
             
             if plane["distance"] <= 0:
                 plane["status"] = "Aterrizó"
-                continue  # No agregar de nuevo a la cola
+                continue  a
 
             planes_to_reorder.append(plane_id)
 
@@ -125,8 +125,6 @@ def manage_takeoffs():
         for plane_id in planes_to_remove:
             if plane_id in takeoff_queue:
                 takeoff_queue.remove(plane_id)
-            if plane_id in planes:
-                del planes[plane_id]
 
         takeoff_queue = new_takeoff_queue
 
@@ -167,8 +165,6 @@ def manage_nearby_planes():
         for plane_id in planes_to_remove:
             if plane_id in nearby_queue:
                 nearby_queue.remove(plane_id)
-            if plane_id in planes:
-                del planes[plane_id]
 
         nearby_queue = new_nearby_queue  
 
