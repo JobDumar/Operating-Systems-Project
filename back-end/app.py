@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
+from flask_cors import CORS
 import time
 import threading
 import heapq
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Cola de prioridad de aviones (menor gasolina -> más prioridad)
