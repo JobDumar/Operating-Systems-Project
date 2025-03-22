@@ -64,6 +64,52 @@ def register_plane():
     
     return jsonify({"message": "Avión registrado", "plane": planes[plane_id]}), 201
 
+# 🔹 codigo de prueba parca actualizar el avión  :)
+
+# 🔹 Nuevo Endpoint para editar un avión
+@app.route('/edit_plane/<plane_id>', methods=['PUT'])
+def edit_plane(plane_id):
+    if plane_id not in planes:
+        return jsonify({"error": "Avión no encontrado"}), 404
+
+    data = request.json
+    plane = planes[plane_id]
+
+    # Actualizar valores si están en el payload
+    if "distance" in data:
+        plane["distance"] = data["distance"]
+    if "speed" in data:
+        plane["speed"] = data["speed"]
+    if "fuel" in data:
+        plane["fuel"] = data["fuel"]
+    if "status" in data:
+        plane["status"] = data["status"]
+
+    # Si el avión está en una cola, reorganizar si es necesario
+    if "fuel" in data or "status" in data:
+        global landing_queue
+        landing_queue = []  # Vaciar la cola
+        for pid in planes:
+            priority_queue(pid)  # Volver a calcular todas las prioridades
+
+    if plane_id in takeoff_queue and (plane["fuel"] <= 20 or plane["status"] == "Emergencia"):
+        takeoff_queue.remove(plane_id)
+        priority_queue(plane_id)
+    
+    if plane_id in nearby_queue and (plane["fuel"] <= 20 or plane["status"] == "Emergencia"):
+        nearby_queue.remove(plane_id)
+        priority_queue(plane_id)
+
+    # Emitir actualización en tiempo real
+    socketio.emit("update_planes", {
+        "planes": planes,
+        "landing_queue": list(landing_queue),
+        "takeoff_queue": takeoff_queue,
+        "nearby_queue": nearby_queue
+    })
+
+    return jsonify({"message": "Avión actualizado", "plane": plane}), 200
+
 # 🔹 Simulación del movimiento de aviones
 def update_planes():
     global landing_queue
