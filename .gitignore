@@ -1,0 +1,33 @@
+# Ignorar archivos de Python
+__pycache__/
+*.py[cod]
+*.so
+*.log
+.venv/
+env/
+venv/
+*.egg-info/
+*.egg
+
+# Archivos de configuración de entorno
+.env
+*.env
+
+# Archivos de caché
+.cache/
+
+# Ignorar archivos de React.js
+node_modules/
+*.log
+dist/
+build/
+.next/
+out/
+
+# Archivos de configuración del editor
+.vscode/
+.idea/
+
+# Ignorar archivos del sistema operativo
+.DS_Store
+Thumbs.db
