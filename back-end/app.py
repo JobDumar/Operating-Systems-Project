@@ -6,7 +6,13 @@ import threading
 import heapq
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:8080", "http://127.0.0.1:8080"],
+        "methods": ["GET", "POST", "PUT", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Cola de prioridad de aviones (menor gasolina -> más prioridad)
