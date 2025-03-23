@@ -120,7 +120,7 @@ def update_planes():
             plane["distance"] -= plane["speed"] * 10
 
             if plane["fuel"] > 0:
-                plane["fuel"] -= max((plane["speed"] * 10) / 500, 0.1)
+                plane["fuel"] -= min(plane['fuel']/max(plane['distance'],1), 0.01)
             
             if plane["distance"] <= 0:
                 plane["status"] = "Aterrizó"
