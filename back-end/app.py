@@ -48,6 +48,9 @@ def register_plane():
     plane_id = data["id"]
     queue_type = data.get("queue", "landing")
 
+    if plane_id in planes:
+        return jsonify({"error": "El avión con este ID ya está registrado"}), 400
+
     planes[plane_id] = {
         "id": plane_id,
         "distance": data["distance"],
@@ -91,21 +94,6 @@ def edit_plane(plane_id):
     if "status" in data:
         plane["status"] = data["status"]
 
-    # Si el avión está en una cola, reorganizar si es necesario
-    if "fuel" in data or "status" in data:
-        global landing_queue
-        landing_queue = []  # Vaciar la cola
-        for pid in planes:
-            priority_queue(pid)  # Volver a calcular todas las prioridades
-
-    if plane_id in takeoff_queue and (plane["fuel"] <= 20 or plane["status"] == "Emergencia"):
-        takeoff_queue.remove(plane_id)
-        priority_queue(plane_id)
-    
-    if plane_id in nearby_queue and (plane["fuel"] <= 20 or plane["status"] == "Emergencia"):
-        nearby_queue.remove(plane_id)
-        priority_queue(plane_id)
-
     # Emitir actualización en tiempo real
     socketio.emit("update_planes", {
         "planes": planes,
@@ -132,10 +120,14 @@ def update_planes():
             plane["distance"] -= plane["speed"] * 10
 
             if plane["fuel"] > 0:
-                plane["fuel"] -= 1 
+                plane["fuel"] -= max((plane["speed"] * 10) / 500, 0.1)
             
             if plane["distance"] <= 0:
                 plane["status"] = "Aterrizó"
+                continue
+
+            if plane["fuel"] == 0 and plane["distance"] > 0:
+                plane["status"] =  "C murio :("
                 continue
 
             planes_to_reorder.append(plane_id)
@@ -165,7 +157,11 @@ def manage_takeoffs():
             
             plane = planes[plane_id]
             plane["distance"] += plane["speed"] * 10
-            plane["fuel"] = max(plane["fuel"] - 1, 0)  
+            plane["fuel"] = max(plane["fuel"] - (plane["speed"] * 10) / 500, 0) 
+
+            if plane["fuel"] == 0 and plane["distance"] > 0:
+                plane["status"] =  "C murio :("
+                planes_to_remove.append(plane_id)
 
             if plane["fuel"] <= 20 or plane["status"] == "Emergencia":
                 priority_queue(plane_id)
@@ -205,7 +201,11 @@ def manage_nearby_planes():
 
             plane = planes[plane_id]
             plane["distance"] -= plane["speed"] * 10
-            plane["fuel"] = max(plane["fuel"] - 1, 0)  
+            plane["fuel"] = max(plane["fuel"] - (plane["speed"] * 10) / 500, 0) 
+
+            if plane["fuel"] == 0 and plane["distance"] > 0:
+                plane["status"] =  "C murio :("
+                planes_to_remove.append(plane_id)
 
             if plane["fuel"] <= 20 or plane["status"] == "Emergencia":
                 priority_queue(plane_id)
