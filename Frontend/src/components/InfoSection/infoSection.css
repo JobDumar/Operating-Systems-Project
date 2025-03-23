@@ -1,10 +1,25 @@
-.info-aircraft-arriving,
-.info-aircraft-leaving {
-    border: 1px solid #cccccc;
-    background-color: rgba(255, 255, 255, 0.05);
-    padding: 15px;
-    border-radius: 8px;
+/* infoSection.css */
+.info-section.landed {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+  color: #666;
 }
 
-.info-aircraft-arriving { grid-area: 1 / 1 / 2 / 2; }
-.info-aircraft-leaving { grid-area: 1 / 2 / 2 / 3; }
+.info-section h3 {
+  margin: 0 0 10px;
+}
+
+.info-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.info-section li {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-section p {
+  color: #666;
+}
