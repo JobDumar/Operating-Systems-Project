@@ -98,8 +98,6 @@ export function Header() {
                 name="fuel"
                 value={formData.fuel}
                 onChange={handleInputChange}
-                min="0"
-                max="100"
                 required
               />
             </label>
