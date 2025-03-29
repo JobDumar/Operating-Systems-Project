@@ -163,14 +163,15 @@ def manage_takeoffs():
                 plane["status"] =  "C murio :("
                 planes_to_remove.append(plane_id)
 
+            if plane["distance"] >= 9999999:
+                planes_to_remove.append(plane_id)
+                continue
+
             if plane["fuel"] <= 20 or plane["status"] == "Emergencia":
                 priority_queue(plane_id)
                 planes_to_remove.append(plane_id)
             else:
                 new_takeoff_queue.append(plane_id)
-
-            if plane["distance"] >= 9999999:
-                planes_to_remove.append(plane_id)
 
         for plane_id in planes_to_remove:
             if plane_id in takeoff_queue:
@@ -200,12 +201,16 @@ def manage_nearby_planes():
                 continue  
 
             plane = planes[plane_id]
-            plane["distance"] -= plane["speed"] * 10
+            plane["distance"] += plane["speed"] * 10
             plane["fuel"] = max(plane["fuel"] - (plane["speed"] * 10) / 500, 0) 
 
             if plane["fuel"] == 0 and plane["distance"] > 0:
                 plane["status"] =  "C murio :("
                 planes_to_remove.append(plane_id)
+
+            if plane["distance"] >= 9999999:
+                print(f"Se cumple la condición para eliminar {plane_id}")
+                continue
 
             if plane["fuel"] <= 20 or plane["status"] == "Emergencia":
                 priority_queue(plane_id)
@@ -213,11 +218,9 @@ def manage_nearby_planes():
             else:
                 new_nearby_queue.append(plane_id)
 
-            if plane["distance"] <= -9999999:
-                planes_to_remove.append(plane_id)
-
         for plane_id in planes_to_remove:
             if plane_id in nearby_queue:
+                print(f"Eliminando {plane_id} de planes")
                 nearby_queue.remove(plane_id)
 
         nearby_queue = new_nearby_queue  
