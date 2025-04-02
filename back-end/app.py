@@ -28,9 +28,9 @@ def priority_queue(plane_id):
     land = plane["distance"] / plane["speed"]
     
     priority = (
+    land,
     0 if plane["status"] == "Emergencia" else 1,
-    plane["fuel"],
-    land
+    -plane["fuel"]
     )
 
     heapq.heappush(landing_queue, (priority, plane_id) )
@@ -109,7 +109,7 @@ def update_planes():
     global landing_queue
 
     while True:
-        time.sleep(1)  # Cada segundo en la realidad = 10 segundos simulados
+        time.sleep(2)  # Cada segundo en la realidad = 10 segundos simulados
 
         planes_to_reorder = []
         
@@ -146,7 +146,7 @@ def manage_takeoffs():
     global takeoff_queue  
 
     while True:
-        time.sleep(1)
+        time.sleep(2)
 
         new_takeoff_queue = []  
         planes_to_remove = []
@@ -191,7 +191,7 @@ def manage_nearby_planes():
     global nearby_queue  
 
     while True:
-        time.sleep(1)
+        time.sleep(2)
 
         new_nearby_queue = []  
         planes_to_remove = [] 
