@@ -109,7 +109,7 @@ def update_planes():
     global landing_queue
 
     while True:
-        time.sleep(2)  # Cada segundo en la realidad = 10 segundos simulados
+        time.sleep(3)  # Cada segundo en la realidad = 10 segundos simulados
 
         planes_to_reorder = []
         
